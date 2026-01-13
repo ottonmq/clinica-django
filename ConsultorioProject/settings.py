@@ -86,27 +86,7 @@ WSGI_APPLICATION = 'ConsultorioProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-#DATABASES = {
-   # 'default': {
-      #  'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-  #  }
-#}
-
 import dj_database_url
-
-DATABASES = {
-    'default': dj_database_url.config(
-        # Este comando busca una variable de entorno llamada DATABASE_URL
-        # Si no la encuentra (como en tu PC), usa SQLite por defecto
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600
-    )
-}
-
-import dj_database_url
-
-# ... (resto del código)
 
 DATABASES = {
     'default': {
@@ -115,10 +95,15 @@ DATABASES = {
     }
 }
 
-# Si Render nos da una URL de base de datos, la usamos:
-db_from_env = dj_database_url.config(conn_max_age=600)
-if db_from_env:
-    DATABASES['default'].update(db_from_env)
+# Solo intentamos usar Postgres si la librería está instalada
+try:
+    import psycopg2
+    db_from_env = dj_database_url.config(conn_max_age=600)
+    if db_from_env:
+        DATABASES['default'].update(db_from_env)
+except ImportError:
+    pass # Si falla, usará SQLite y al menos la página cargará
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
