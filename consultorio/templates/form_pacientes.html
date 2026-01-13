@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow-lg border-0" style="border-radius: 15px;">
+        <div class="card-header bg-primary text-white text-center py-3">
+            <h2 class="fw-bold mb-0"><i class="fas fa-file-medical me-2"></i>FICHA CLÍNICA INTEGRAL</h2>
+        </div>
+        
+        <div class="card-body p-4 p-md-5 bg-white">
+            <form method="POST" id="miFormulario">
+                {% csrf_token %}
+                
+                <div class="mb-5">
+                    <h5 class="text-primary fw-bold border-bottom pb-2"><i class="fas fa-user-circle me-2"></i>1. DATOS PERSONALES</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-bold small">Nombre Completo *</label>
+                            <input type="text" name="nombre" class="form-control bg-light" value="{{ p.nombre|default:'' }}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="fw-bold small">Edad</label>
+                            <input type="number" name="edad" class="form-control bg-light" value="{{ p.edad|default:'' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">Nacionalidad</label>
+                            <input type="text" name="nacionalidad" class="form-control bg-light" value="{{ p.nacionalidad|default:'Salvadoreña' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">DUI</label>
+                            <input type="text" name="dui" class="form-control bg-light" value="{{ p.dui|default:'' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">Teléfono</label>
+                            <input type="text" name="telefono" class="form-control bg-light" value="{{ p.telefono|default:'' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">Correo Electrónico</label>
+                            <input type="email" name="correo" class="form-control bg-light" value="{{ p.correo|default:'' }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold small">Dirección de Residencia</label>
+                            <input type="text" name="direccion" class="form-control bg-light" value="{{ p.direccion|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h5 class="text-danger fw-bold border-bottom pb-2"><i class="fas fa-history me-2"></i>2. HISTORIA MÉDICA</h5>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="fw-bold small">Consulta por:</label>
+                            <input type="text" name="consulta_por" class="form-control bg-light" value="{{ p.consulta_por|default:'' }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold small">Enfermedad Actual:</label>
+                            <input type="text" name="enfermedad_actual" class="form-control bg-light" value="{{ p.enfermedad_actual|default:'' }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold small">Antecedentes Personales y Familiares:</label>
+                            <input type="text" name="antecedentes_personales_familiares" class="form-control bg-light" value="{{ p.antecedentes_personales_familiares|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h5 class="text-success fw-bold border-bottom pb-2"><i class="fas fa-heartbeat me-2"></i>3. EXAMEN FÍSICO (SIGNOS VITALES)</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="fw-bold small">PA (Presión Arterial)</label>
+                            <input type="text" name="pa" class="form-control border-success" placeholder="Ej: 120/80" value="{{ p.pa|default:'' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">FC (Frecuencia Cardíaca)</label>
+                            <input type="text" name="fc" class="form-control border-success" placeholder="Ej: 75 lpm" value="{{ p.fc|default:'' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">FR (Frecuencia Respiratoria)</label>
+                            <input type="text" name="fr" class="form-control border-success" placeholder="Ej: 18 rpm" value="{{ p.fr|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5 p-4 border rounded" style="background-color: #f0f9ff;">
+                    <h5 class="text-info fw-bold border-bottom pb-2"><i class="fas fa-baby me-2"></i>4. CONTROL GINECO-OBSTÉTRICO</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="fw-bold small">FUM</label>
+                            <input type="date" name="fum" class="form-control border-info" value="{{ p.fum|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">FPM</label>
+                            <input type="date" name="fpm" class="form-control border-info" value="{{ p.fpm|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small">FPP</label>
+                            <input type="date" name="fpp" class="form-control border-info" value="{{ p.fpp|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-bold small">Amenorrea (Semanas/Días)</label>
+                            <div class="input-group">
+                                <input type="number" name="amenorrea_semanas" class="form-control border-info" placeholder="S" value="{{ p.amenorrea_semanas|default:0 }}">
+                                <span class="input-group-text">S</span>
+                                <input type="number" name="amenorrea_dias" class="form-control border-info" placeholder="D" value="{{ p.amenorrea_dias|default:0 }}">
+                                <span class="input-group-text">D</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5 p-4 border rounded" style="background-color: #fff5f8;">
+                    <h5 class="fw-bold border-bottom pb-2" style="color: #d63384;"><i class="fas fa-tv me-2"></i>5. ESTUDIO DE ULTRASONOGRAFÍA</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="fw-bold small">Tipo de Ultrasonido</label>
+                            <select name="tipo_ultrasonido" class="form-select border-danger">
+                                <option value="">--- Seleccione Tipo ---</option>
+                                <option value="Obstétrico" {% if p.tipo_ultrasonido == 'Obstétrico' %}selected{% endif %}>Obstétrico</option>
+                                <option value="Pélvico" {% if p.tipo_ultrasonido == 'Pélvico' %}selected{% endif %}>Pélvico</option>
+                                <option value="Abdominal" {% if p.tipo_ultrasonido == 'Abdominal' %}selected{% endif %}>Abdominal</option>
+                                <option value="Transvaginal" {% if p.tipo_ultrasonido == 'Transvaginal' %}selected{% endif %}>Transvaginal</option>
+                                <option value="Renal" {% if p.tipo_ultrasonido == 'Renal' %}selected{% endif %}>Renal</option>
+                                <option value="Mama" {% if p.tipo_ultrasonido == 'Mama' %}selected{% endif %}>Mama</option>
+                                <option value="Prostático" {% if p.tipo_ultrasonido == 'Prostático' %}selected{% endif %}>Prostático</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="fw-bold small">Detalle / Hallazgos del Estudio</label>
+                            <input type="text" name="detalle_ultrasonido" class="form-control border-danger" value="{{ p.detalle_ultrasonido|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 pt-4 border-top">
+                    <a href="{% url 'list_pacientes' %}" class="btn btn-outline-secondary btn-lg px-4 fw-bold">CANCELAR</a>
+                    <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold shadow">
+                        <i class="fas fa-save me-2"></i>GUARDAR TODO
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('miFormulario').onkeypress = function(e) {
+        var key = e.charCode || e.keyCode || 0;     
+        if (key == 13) {
+            e.preventDefault(); // Evita que se guarde solo
+            
+            // Lógica para saltar al siguiente cuadro
+            const inputs = Array.from(e.target.form.elements).filter(el => el.type !== 'hidden' && el.type !== 'submit');
+            const index = inputs.indexOf(e.target);
+            if (index > -1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark"><i class="fas fa-address-card me-2 text-primary"></i>Expedientes Registrados</h2>
+        <a href="{% url 'form_paciente' %}" class="btn btn-primary btn-lg shadow">
+            <i class="fas fa-plus-circle me-1"></i> NUEVO PACIENTE
+        </a>
+    </div>
+
+    <div class="mb-4">
+        <div class="input-group shadow-sm">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+            <input type="text" id="busqueda" class="form-control border-start-0 ps-0" placeholder="Buscar por nombre, DUI o diagnóstico...">
+        </div>
+    </div>
+
+    <div class="row g-4" id="contenedorPacientes">
+        {% for p in pacientes %}
+        <div class="col-xl-6 paciente-card">
+            <div class="card h-100 shadow-sm border-0" style="border-radius: 20px; overflow: hidden; border-left: 6px solid #0d6efd !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4 class="fw-bold mb-0 text-uppercase">{{ p.nombre }}</h4>
+                            <span class="badge bg-light text-primary border">{{ p.edad|default:"0" }} años</span>
+                            <span class="text-muted small ms-2">DUI: {{ p.dui|default:"---" }}</span>
+                        </div>
+                        <a href="{% url 'editar_paciente' pk=p.id %}" class="btn btn-outline-warning btn-sm border-0">
+                            <i class="fas fa-edit fa-lg"></i>
+                        </a>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 border-end">
+                            <h6 class="fw-bold text-muted small text-uppercase mb-2">Contacto y Ubicación</h6>
+                            <p class="small mb-1"><i class="fas fa-phone me-2 text-primary"></i>{{ p.telefono|default:"No registrado" }}</p>
+                            <p class="small mb-1"><i class="fas fa-map-marker-alt me-2 text-primary"></i>{{ p.direccion|default:"Sin dirección" }}</p>
+                            <p class="small mb-0 text-truncate"><i class="fas fa-envelope me-2 text-primary"></i>{{ p.correo|default:"Sin correo" }}</p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted small text-uppercase mb-2">Signos Vitales</h6>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <div class="bg-success bg-opacity-10 p-2 rounded text-center" style="min-width: 60px;">
+                                    <div class="small fw-bold text-success">PA</div>
+                                    <div class="small">{{ p.pa|default:"--" }}</div>
+                                </div>
+                                <div class="bg-success bg-opacity-10 p-2 rounded text-center" style="min-width: 60px;">
+                                    <div class="small fw-bold text-success">FC</div>
+                                    <div class="small">{{ p.fc|default:"--" }}</div>
+                                </div>
+                                <div class="bg-success bg-opacity-10 p-2 rounded text-center" style="min-width: 60px;">
+                                    <div class="small fw-bold text-success">FR</div>
+                                    <div class="small">{{ p.fr|default:"--" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-3 text-muted opacity-25">
+
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-danger small text-uppercase mb-1">Motivo de Consulta y Antecedentes</h6>
+                        <p class="small mb-1"><strong>Consulta:</strong> {{ p.consulta_por|default:"--" }}</p>
+                        <p class="small mb-0"><strong>Antecedentes:</strong> {{ p.antecedentes_personales_familiares|default:"Sin datos" }}</p>
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="p-2 rounded h-100" style="background-color: #f0f9ff; border: 1px solid #bae6fd;">
+                                <h6 class="fw-bold text-info small text-uppercase mb-1"><i class="fas fa-baby me-1"></i>Obstetricia</h6>
+                                <div class="small"><strong>FPP:</strong> <span class="text-danger fw-bold">{{ p.fpp|date:"d/m/Y"|default:"--" }}</span></div>
+                                <div class="small text-muted">Ame: {{ p.amenorrea_semanas }}s / {{ p.amenorrea_dias }}d</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-2 rounded h-100" style="background-color: #fff5f8; border: 1px solid #ffd1dc;">
+                                <h6 class="fw-bold small text-uppercase mb-1" style="color: #d63384;"><i class="fas fa-tv me-1"></i>Ultra</h6>
+                                <div class="small fw-bold text-truncate">{{ p.tipo_ultrasonido|default:"Sin estudio" }}</div>
+                                <div class="small text-muted text-truncate">{{ p.detalle_ultrasonido|default:"--" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-flex gap-2">
+    <a href="{% url 'editar_paciente' p.id %}" class="btn btn-outline-warning btn-sm border-0">
+        <i class="fas fa-edit fa-lg"></i>
+    </a>
+    <a href="{% url 'imprimir_paciente' p.id %}" target="_blank" class="btn btn-outline-dark btn-sm border-0">
+        <i class="fas fa-print fa-lg"></i>
+    </a>
+    <a href="{% url 'eliminar_paciente' p.id %}" 
+   class="btn btn-outline-danger btn-sm border-0" 
+   onclick="return confirm('¿Realmente desea borrar este expediente? No se puede recuperar.');">
+    <i class="fas fa-trash-alt fa-lg"></i>
+</a>
+
+</div>
+
+        
+        
+        {% empty %}
+        <div class="text-center py-5">
+            <h4 class="text-muted">No hay pacientes registrados aún.</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('busqueda').addEventListener('keyup', function() {
+        let filtro = this.value.toLowerCase();
+        let tarjetas = document.querySelectorAll('.paciente-card');
+        tarjetas.forEach(tarjeta => {
+            let texto = tarjeta.innerText.toLowerCase();
+            tarjeta.style.display = texto.includes(filtro) ? '' : 'none';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dr. René Quant Matus | Gestión Clínica</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-dark: #1a233a;
+            --accent-blue: #00bcd4;
+            --bg-light: #f4f7f6;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR PARA ESCRITORIO */
+        .sidebar {
+            width: 260px;
+            background-color: var(--primary-dark);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            margin-left: 260px;
+            padding: 20px;
+            width: calc(100% - 260px);
+            transition: all 0.3s;
+        }
+
+        /* MENÚ */
+        .sidebar-header {
+            padding: 25px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-link-custom {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #a0acbf;
+            text-decoration: none;
+            transition: 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: white;
+            background: rgba(255,255,255,0.05);
+            border-left-color: var(--accent-blue);
+        }
+
+        .nav-link-custom i {
+            width: 25px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* --- AJUSTES PARA CELULAR (RESPONSIVE) --- */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                min-height: auto;
+            }
+
+            .sidebar-header {
+                padding: 10px;
+            }
+
+            .sidebar-header h2 { font-size: 1.1rem; margin-bottom: 0; }
+            .sidebar-header p { display: none; }
+
+            .nav-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                background: #141b2d;
+            }
+
+            .nav-link-custom {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+
+            .nav-link-custom:hover, .nav-link-custom.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--accent-blue);
+            }
+
+            .nav-link-custom i {
+                margin-right: 5px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2 class="h5 fw-bold text-white mb-1">DR. QUANT MATUS</h2>
+            <p class="small text-info mb-0">Ultrasonido & Clínica</p>
+        </div>
+        
+        <div class="nav-container mt-2">
+            <a href="{% url 'dashboard' %}" class="nav-link-custom">
+                <i class="fas fa-chart-line"></i> <span>Dashboard</span>
+            </a>
+            <a href="{% url 'list_pacientes' %}" class="nav-link-custom">
+                <i class="fas fa-users"></i> <span>Pacientes</span>
+            </a>
+            <a href="{% url 'form_paciente' %}" class="nav-link-custom">
+                <i class="fas fa-user-plus"></i> <span>Nueva Consulta</span>
+            </a>
+            <a href="{% url 'backup' %}" class="nav-link-custom">
+                <i class="fas fa-download"></i> <span>Backup</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
