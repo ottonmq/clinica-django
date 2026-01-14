@@ -36,7 +36,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 
-ALLOWED_HOSTS = ['https://clinica-django-ptac.onrender.com', 'localhost', '127.0.0.1']
+# Elimina el 'https://'
+ALLOWED_HOSTS = ['clinica-django-ptac.onrender.com', 'localhost', '127.0.0.1']
 
 
 
