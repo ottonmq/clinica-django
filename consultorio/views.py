@@ -11,11 +11,13 @@ def dashboard(request):
         'total_c': conteo_p
     })
 
-
+@login_required
 def list_pacientes(request):
     pacientes = Paciente.objects.all()
     return render(request, 'list_pacientes.html', {'pacientes': pacientes})
 
+
+@login_required
 def form_paciente(request, pk=None):
     p = get_object_or_404(Paciente, pk=pk) if pk else None
     if request.method == 'POST':
@@ -49,6 +51,8 @@ def form_paciente(request, pk=None):
         return redirect('list_pacientes')
     return render(request, 'form_pacientes.html', {'p': p})
 
+
+@login_required
 def backup(request):
     data = serializers.serialize("json", Paciente.objects.all())
     response = HttpResponse(data, content_type="application/json")
